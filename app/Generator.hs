@@ -86,13 +86,13 @@ replacePos layout pos value =
     [if curIndex == index then value else curValue | (curIndex, curValue) <- zip [0..] layout]
     where index = posToIndex pos
 
--- stringifyLayout :: [Int] -> String
--- stringifyLayout layout =
---     join "\n" [join " " row | row <- rows]
---     where rows = [getRow layout (i, 0) | i <- [0..8]]
-
 stringifyLayout :: [Int] -> String
-stringifyWithDots = intercalate "."
 stringifyLayout layout =
-    join " " [join "." row | row <- rows]
+    join "\n" [join " " row | row <- rows]
     where rows = [getRow layout (i, 0) | i <- [0..8]]
+
+-- stringifyLayout :: [Int] -> String
+-- stringifyWithDots = intercalate "."
+-- stringifyLayout layout =
+--     join " " [join "." row | row <- rows]
+--     where rows = [getRow layout (i, 0) | i <- [0..8]]
