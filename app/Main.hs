@@ -3,12 +3,10 @@ import Data.Set (Set, unions, fromList, member)
 import Data.Map (Map, singleton, elems, (!), insert)
 import Debug.Trace (trace)
 import Data.List.Split
+import SudokuGenerator
 import Solving
-import Generator
 import Data.Text (pack, unpack, strip)
 import Data.Char (isSpace)
---import Test
-import Test1
 
 main :: IO ()
 main = do
@@ -17,9 +15,9 @@ main = do
     let flattened = flattenString sudokuString
     let whithoutSpaces = removeSpaces flattened
     modifiedString <- removeRandomChars whithoutSpaces   
-    hello <- return (readGrid modifiedString)
+    let gridRead = readGrid modifiedString
     putStrLn "Your sudoku:"
-    let maybeGrid = hello
+    let maybeGrid = gridRead
     case maybeGrid of
         Just g -> putStrLn (showGrid g)
         Nothing -> putStrLn "Failed to get the grid"
