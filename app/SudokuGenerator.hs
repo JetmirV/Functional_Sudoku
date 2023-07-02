@@ -3,6 +3,8 @@ module SudokuGenerator where
 import System.Random
 import Data.Char (isSpace)
 import System.Random (randomRIO)
+import Data.Maybe (isJust, fromJust)
+import Data.Char (digitToInt)
 
 -- Type definitions
 type Row = [Int]
@@ -117,3 +119,17 @@ replaceCharAtIndex :: Int -> Char -> String -> String
 replaceCharAtIndex index newChar str
   | index < 0 || index >= length str = str -- Return the original string if the index is out of bounds
   | otherwise = take index str ++ [newChar] ++ drop (index + 1) str
+
+-- Converts the string representation to a Grid
+stringToGrid :: String -> Maybe Grid
+stringToGrid str
+  | length str == 81 = Just (chunksOf 9 (map convertChar str))
+  | otherwise = Nothing
+  where
+    convertChar :: Char -> Int
+    convertChar '.' = 0
+    convertChar c = digitToInt c
+    
+    chunksOf :: Int -> [a] -> [[a]]
+    chunksOf _ [] = []
+    chunksOf n xs = take n xs : chunksOf n (drop n xs)
