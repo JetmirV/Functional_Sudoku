@@ -1,6 +1,8 @@
 module Test1 where
 
 import System.Random
+import Data.Char (isSpace)
+import System.Random (randomRIO)
 
 -- Type definitions
 type Row = [Int]
@@ -76,3 +78,37 @@ printGrid = mapM_ printRow
   where
     printRow :: Row -> IO ()
     printRow = putStrLn . unwords . map show
+
+-- Converts the Sudoku grid to a string representation
+gridToString :: Maybe Grid -> String
+gridToString Nothing = "No solution found."
+gridToString (Just grid) = unlines $ map (unwords . map show) grid
+
+-- Converts a multi-line string to a single-line string
+flattenString :: String -> String
+flattenString = filter (/= '\n')
+
+-- Removes all white spaces from a string
+removeSpaces :: String -> String
+removeSpaces = filter (not . isSpace)
+
+
+-- Removes random characters from a string and replaces them with dots
+removeRandomChars :: String -> IO String
+removeRandomChars str = do
+  indices <- getRandomIndices (length str) (length str `div` 3)  -- Adjust the division factor as per your requirement
+  let replacedStr = foldr (\i s -> replaceChar i '.' s) str indices
+  return replacedStr
+
+-- Generates random distinct indices within a given range
+getRandomIndices :: Int -> Int -> IO [Int]
+getRandomIndices _ 0 = return []
+getRandomIndices range n = do
+  index <- randomRIO (0, range - 1)
+  rest <- getRandomIndices range (n - 1)
+  return (index : rest)
+
+-- Replaces a character at the specified index with a new character
+replaceChar :: Int -> Char -> String -> String
+replaceChar index newChar str =
+  take index str ++ [newChar] ++ drop (index + 1) str
