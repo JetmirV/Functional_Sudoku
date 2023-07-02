@@ -5,6 +5,7 @@ import Data.Set (Set, unions, fromList, member)
 import Data.Map (Map, singleton, elems, (!), insert)
 import Debug.Trace (trace)
 
+
 join :: Show a => String -> [a] -> String
 join _   []     = ""
 join _   (x:[]) = show x
@@ -14,7 +15,7 @@ fisherYatesStep :: RandomGen g => (Map Int a, g) -> (Int, a) -> (Map Int a, g)
 fisherYatesStep (m, gen) (i, x) =
     ((insert j x . insert i (m ! j)) m, gen')
     where (j, gen') = randomR (0, i) gen
- 
+
 fisherYates :: RandomGen g => g -> [a] -> ([a], g)
 fisherYates gen [] = ([], gen)
 fisherYates gen l = 
@@ -90,9 +91,3 @@ stringifyLayout :: [Int] -> String
 stringifyLayout layout =
     join "\n" [join " " row | row <- rows]
     where rows = [getRow layout (i, 0) | i <- [0..8]]
-
--- stringifyLayout :: [Int] -> String
--- stringifyWithDots = intercalate "."
--- stringifyLayout layout =
---     join " " [join "." row | row <- rows]
---     where rows = [getRow layout (i, 0) | i <- [0..8]]
