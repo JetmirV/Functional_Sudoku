@@ -17,12 +17,6 @@ main = do
     let whithoutSpaces = removeSpaces flattened
     modifiedString <- removeRandomChars whithoutSpaces   
 
-    -- putStrLn modifiedString
-    -- let grid = stringToGrid modifiedString
-    -- case grid of
-    --     Just t -> printGrid t
-    --     Nothing -> putStrLn "Nothing"
-
     let gridRead = readGrid modifiedString
     putStrLn "Your sudoku:"
     let maybeGrid = gridRead
@@ -51,7 +45,7 @@ playLoop acc = do
   else do
     -- Perform the insert logic here
     let (first, second, third) = splitAndConvert input
-    let position = first * second
+    let position = ((first) * 9) + (second)
     let gridRead = stringToGrid acc
     let isNumberValidInThisPlace = case gridRead of
             Just a -> isValid a (charToInt third) (first, second)
@@ -89,6 +83,6 @@ toString x = if x then ["True"] else ["False"]
 charToInt :: Char -> Int
 charToInt c = read [c] :: Int
     
-
-    
+addOne :: Int -> Int
+addOne num = num + 1
 
